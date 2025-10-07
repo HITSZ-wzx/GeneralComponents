@@ -1,20 +1,17 @@
 
-This is the official implementation of our paper [Not All Samples Are Born Equal: Towards Effective Clean-Label Backdoor Attacks](https://www.sciencedirect.com/science/article/abs/pii/S0031320323002121), accepted by Pattern Recognition (2023). This research project is developed based on Python 3 and Pytorch, created by [Yinghua Gao]() and [Yiming Li](http://liyiming.tech/).
-
-
+This is the official implementation of our paper [A Set of Generalized Components to Achieve Effective Poison-only Clean-label Backdoor Attacks with Collaborative Sample Selection and Triggers](https://arxiv.org/abs/2509.19947), accepted by NeurIPS 2025. 
 
 ## Requirements
 conda create --name GeneralComponents python=3.8
 conda activate GeneralComponents
 pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 -f https://download.pytorch.org/whl/torch_stable.html
-
-* python = 3.7.13
-* numpy = 1.21.5
-* torch = 1.12.1
-* torchvision = 0.2.1
+pip install numpy==1.22.3
+pip install jupyter_core==5.8.1
+pip install opencv-python==4.5.5.64
+pip install scipy==1.10.1
 
 ## A Quick Start
-**Step 1: Calculate three metrics (loss value, gradient norm and forgetting events)**
+**Step 1: Calculate metrics for sample selection**
 
 ```
 CUDA_VISIBLE_DEVICES=0 python cal_metric.py --output_dir save_metric
@@ -32,23 +29,12 @@ CUDA_VISIBLE_DEVICES=0 python train_backdoor.py --output_dir save_metric --resul
 If this work or our codes are useful for your research, please kindly cite our paper as follows.
 
 ```
-@article{gao2023not,
-  title={Not all samples are born equal: Towards effective clean-label backdoor attacks},
-  author={Gao, Yinghua and Li, Yiming and Zhu, Linghui and Wu, Dongxian and Jiang, Yong and Xia, Shu-Tao},
-  journal={Pattern Recognition},
-  volume={139},
-  pages={109512},
-  year={2023},
-  publisher={Elsevier}
+@misc{wu2025setgeneralizedcomponentsachieve,
+      title={A Set of Generalized Components to Achieve Effective Poison-only Clean-label Backdoor Attacks with Collaborative Sample Selection and Triggers}, 
+      author={Zhixiao Wu and Yao Lu and Jie Wen and Hao Sun and Qi Zhou and Guangming Lu},
+      year={2025},
+      eprint={2509.19947},
+      archivePrefix={arXiv},
+      primaryClass={cs.CR},
 }
 ```
-
-
-
-
-## Acknowledgement
-Our implementation is based on the following projects. We sincerely thank the authors for releasing their codes.
-
-* [An Empirical Study of Example Forgetting during Deep Neural Network Learning](https://github.com/mtoneva/example_forgetting)
-* [Adversarial Neuron Pruning Purifies Backdoored Deep Models](https://github.com/csdongxian/ANP_backdoor)
-
