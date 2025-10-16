@@ -3,11 +3,17 @@ This is the official implementation of our paper [A Set of Generalized Component
 
 ## Requirements
 conda create --name GeneralComponents python=3.8
+
 conda activate GeneralComponents
+
 pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 -f https://download.pytorch.org/whl/torch_stable.html
+
 pip install numpy==1.22.3
+
 pip install jupyter_core==5.8.1
+
 pip install opencv-python==4.5.5.64
+
 pip install scipy==1.10.1
 
 ## A Quick Start
