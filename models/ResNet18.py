@@ -44,7 +44,7 @@ class ResNet18(nn.Module):
         self.layer_3 = self.make_layer(ResidualBlock, 128, 256, stride=2)
         self.layer_4 = self.make_layer(ResidualBlock, 256, 512, stride=2)
         self.avgpool = nn.AvgPool2d((3, 3), stride=2)
-        self.fc = nn.Linear(512 * 1 * 1, 100)
+        self.fc = nn.Linear(512 * 1 * 1, 10)
         
     def forward(self, x):
         x = self.conv1(x)

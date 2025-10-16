@@ -83,7 +83,7 @@ class DenseNet121(nn.Module):
         self.DenseBlock_4 = DenseBlock(inCH=self.Transition_3.outCH, layernum=16, k=self.k)
         self.bn = nn.BatchNorm2d(self.DenseBlock_4.outCH)
         self.avgpool = nn.AvgPool2d((4, 4))
-        self.linear = nn.Linear(self.DenseBlock_4.outCH*1*1, 200)
+        self.linear = nn.Linear(self.DenseBlock_4.outCH*1*1, 10)
 
     def forward(self, x):
         x = self.pre_layer(x)

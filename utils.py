@@ -135,7 +135,7 @@ def Add_Test_Trigger_combat(dataset, target):
     device = torch.device("cuda" if use_cuda else "cpu")
     netG = UnetGenerator().to(device)
     gauss_smooth = T.GaussianBlur(kernel_size=3, sigma=(0.1, 1.0))
-    load_path = "/home/boot/STU/workspaces/wzx/Samples_select/cifar10_combat_clean.pth.tar"
+    load_path = "./resource/cifar10_combat_clean.pth.tar"
     if not os.path.exists(load_path):
         print("Error: {} not found".format(load_path))
         #exit()
@@ -148,7 +148,6 @@ def Add_Test_Trigger_combat(dataset, target):
         data = dataset[i]
         img = data[0]
         label = data[1]
-        #todo why
         if label == target:
             continue
         img =img.to('cuda')
@@ -226,46 +225,6 @@ def compute_gmsd(img1_path, img2_path, sigma=1.4):
     # 计算相似性偏差
     gmsd_value = np.std(similarity_map)
     return gmsd_value
-def Add_Clean_Label_Train_Trigger_NAR_stealth(dataset, trigger, target, class_order, num):
-    dataset_ = list()
-    checkboard = [1, 1, 1]
-    temp = list()
-    m = 0
-    test = '/home/boot/STU/workspaces/wzx/Samples_select/testnar.JPEG'
-    testw = '/home/boot/STU/workspaces/wzx/Samples_select/testwnar.JPEG'          
-    for i in range(len(dataset)):
-        data = dataset[i]
-        img = data[0]
-        label = data[1]
-        if i in class_order:
-            temp_img = img * 1
-            for j in range(3):
-                alpha = checkboard[j]*0.1
-                temp_img[j, :, :] = temp_img[j, :, :] + checkboard[j]*trigger[j, :, :]
-                temp_img[j, :, :] = torch.clamp(temp_img[j, :, :], 0, 1)
-            image = (img * 255).numpy().astype(np.uint8)
-            image_np = np.moveaxis(image, 0, -1)
-            cv2.imwrite(test, image_np)
-            imaget = (temp_img * 255).numpy().astype(np.uint8)
-            image_npt = np.moveaxis(imaget, 0, -1)
-            cv2.imwrite(testw, image_npt)
-            temp.append((img, label, compute_gmsd(test, testw), m))
-            m = m + 1
-        else:
-            dataset_.append((img, data[1], 0))
-    sorted_tuples = sorted(temp, key=lambda x: x[2])
-    nsmallest = [t[3] for t in sorted_tuples[:num]]
-    for i in range(len(temp)):
-        if i in nsmallest:
-            img = temp[i][0]
-            temp_img = img * 1
-            for j in range(3):
-                temp_img[j, :, :] = temp_img[j, :, :] + checkboard[j]*trigger[j, :, :]
-                temp_img[j, :, :] = torch.clamp(temp_img[j, :, :], 0, 1)
-            dataset_.append((temp_img, temp[i][1], 1))
-        else:
-            dataset_.append((temp[i][0], temp[i][1], 0))
-    return dataset_
     
 def Add_Clean_Label_Train_Trigger_blend_stealth(dataset, trigger, target, class_order, type, num):
     dataset_ = list()
@@ -281,8 +240,8 @@ def Add_Clean_Label_Train_Trigger_blend_stealth(dataset, trigger, target, class_
     u = u + random.randint(100*u,100*u+100)
     temp = list()
     m = 0
-    test = '/home/boot/STU/workspaces/wzx/Samples_select/testblend' + str(u) + '.JPEG'
-    testw = '/home/boot/STU/workspaces/wzx/Samples_select/testwblend' + str(u) + '.JPEG'
+    test = './testblend' + str(u) + '.JPEG'
+    testw = './testwblend' + str(u) + '.JPEG'
     for i in range(len(dataset)):
         data = dataset[i]
         img = data[0]
@@ -490,21 +449,6 @@ def Add_Clean_Label_Train_Trigger_siba(dataset, target, class_order, save_trigge
         label = data[1]
         if i in class_order:
             temp_img = img + uap * mask
-            temp_img = torch.clamp(temp_img, 0, 1)
-            dataset_.append((temp_img, target, 1))
-        else:
-            dataset_.append((img, data[1], 0))           
-    return dataset_
-def Add_Clean_Label_Train_Trigger_ground(dataset, target, class_order, datasetname):
-    upgd_path = "/home/boot/STU/workspaces/wzx/BLearnDefense/triggers/ground/upgd-" + datasetname + "-ResNet18-Linf-eps8.0"
-    trigger = torch.load(os.path.join(upgd_path, 'upgd_'+str(target)+'.pth'), map_location='cpu')
-    dataset_ = list()
-    for i in range(len(dataset)):
-        data = dataset[i]
-        img = data[0]
-        label = data[1]
-        if i in class_order:
-            temp_img = img + trigger
             temp_img = torch.clamp(temp_img, 0, 1)
             dataset_.append((temp_img, target, 1))
         else:

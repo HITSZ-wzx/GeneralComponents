@@ -24,7 +24,7 @@ class AlexNet(nn.Module):
         self.dp_1 = nn.Dropout()
         self.fc_2 = nn.Linear(2048, 1024)
         self.dp_2 = nn.Dropout()
-        self.fc_3 = nn.Linear(1024, 200)
+        self.fc_3 = nn.Linear(1024, 10)
 
     def forward(self, x):
         x = self.Conv2d_1(x)

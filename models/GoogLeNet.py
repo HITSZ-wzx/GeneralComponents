@@ -107,7 +107,7 @@ class GoogLeNet(nn.Module):
 
         self.avgPool = nn.AvgPool2d((8, 8), stride=1)
         self.dp = nn.Dropout(0.4)
-        self.fc = nn.Linear(1*1*1024, 200)
+        self.fc = nn.Linear(1*1*1024, 10)
 
         self.auxClassifier_1 = AuxClassifier(inCH=512)
         self.auxClassifier_2 = AuxClassifier(inCH=528)

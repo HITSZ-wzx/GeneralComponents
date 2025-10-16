@@ -55,7 +55,7 @@ class MobileNet(nn.Module):
             DepthwiseConv2d(ksize=3, inCH=1024, outCH=1024, padding=1)
         )
         self.avgpool = nn.AvgPool2d((4, 4))
-        self.linear = nn.Linear(1024*1*1, 200)
+        self.linear = nn.Linear(1024*1*1, 10)
 
     def forward(self, x):
         x = self.pre_layer(x)

@@ -65,7 +65,7 @@ class SqueezeNet(nn.Module):
 
         self.fire_9 = Fire(inCH=512, config=FireBlockConfig, name='fire9')
 
-        self.conv_10 = BasicConv2d(1, 512, 200)
+        self.conv_10 = BasicConv2d(1, 512, 10)
         self.avgpool_10 = nn.AvgPool2d((3, 3), stride=2)
 
     def forward(self, x):
@@ -88,5 +88,5 @@ class SqueezeNet(nn.Module):
         x = self.conv_10(x)
         x = self.avgpool_10(x)
 
-        x = x.view(-1, 1*1*200)
+        x = x.view(-1, 1*1*10)
         return x

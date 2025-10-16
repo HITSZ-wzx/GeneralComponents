@@ -48,7 +48,7 @@ class VGG16(nn.Module):
         self.dp_1 = nn.Dropout()
         self.fc_2 = nn.Linear(256, 128)
         self.bn_1 = nn.BatchNorm1d(128)
-        self.fc_3 = nn.Linear(128, 200)
+        self.fc_3 = nn.Linear(128, 10)
 
     def forward(self, x):
 

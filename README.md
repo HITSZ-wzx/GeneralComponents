@@ -16,14 +16,32 @@ pip install scipy==1.10.1
 ```
 CUDA_VISIBLE_DEVICES=0 python cal_metric.py --output_dir save_metric
 ```
-
+We also provide the result in ./resource/save_metric_10_res
 **Step 2: Train backdoored model with different sample selection methods**
 
 ```
-CUDA_VISIBLE_DEVICES=0 python train_backdoor.py --output_dir save_metric --result_dir save_res --selection forget --backdoor_type badnets --y_target 0 --select_epoch 10
+CUDA_VISIBLE_DEVICES=0 python train_backdoor.py --output_dir save_metric --result_dir save_res --selection res --res_sel linear --backdoor_type badnets --y_target 0 --select_epoch 10 --poison_rate 0.01 --type 0:0:0
 ```
+>- res-X in the paper : e.g., res-linear => --selection res --res_sel linear
+
+>- forgetting event, grad, ... : e.g., forget => --selection forget
+
+>- stealth meaning Component B: e.g., Component B => --selection stealth
+>>- We provide the application of Component B upon Blended attacks with GMSD. Application to other attacks with other metrics is similar to the provided codes.
+
+
+type: 
+>- for Badnets, 0:0:0, 1:1:1, 2:2:2, 0:1:1 used in paper. e.g. 0:0:0 => --type 0:0:0
+      
+>- for Blend, 2:1:3, 2:2:2 used in paper. e.g. 2:1:3 => --type 2:1:3
+      
+>- for Quantize, 24:28:8 used in paper. e.g. 24:28:8 => --num_levels 24:28:8
+
+Currently, Component C has been adapted for Badnets (type), Blend (type), and Quantize (num_levels). For application to other attacks, modifications can be made by referring to the aforementioned attacks. The meaning of "type" varies for each attack and is related to its specific definition.
 
 `--select epoch` specifies the epoch used to calculate the statistics. `--output_dir` must be the same with the one used in cal_metric.py
+
+For the backdoor defense experiments, the implement is based on the Backdoorbench repository (https://github.com/SCLBD/BackdoorBench.git). We simply save the indices filtered out from the train_backdoor.py and replace the indices in the corresponding code in BackdoorBench to test the defense (random selection is used by default).
 
 ## Citing
 If this work or our codes are useful for your research, please kindly cite our paper as follows.
